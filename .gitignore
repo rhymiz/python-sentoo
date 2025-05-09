@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.ruff_cache/
+.idea/
+.DS_Store
