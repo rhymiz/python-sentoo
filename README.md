@@ -7,7 +7,7 @@ A client library for [Sentoo](https://sentoo.io/)
 You can install the library using pip:
 
 ```bash
-pip install python-sentoo
+pip install sentoo
 ```
 ## Usage
 
