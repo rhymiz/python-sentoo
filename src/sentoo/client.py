@@ -25,6 +25,7 @@ class CreateTransactionKwargs(TypedDict):
     """
     Type definition for transaction creation parameters
     """
+
     sentoo_merchant: str
     sentoo_amount: int
     sentoo_description: str
