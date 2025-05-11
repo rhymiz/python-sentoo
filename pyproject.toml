@@ -1,7 +1,7 @@
 [project]
-name = "python-sentoo"
+name = "sentoo"
 dynamic = ["version"]
-description = "Add your description here"
+description = "A client library for Sentoo.io"
 readme = "README.md"
 authors = [{ name = "Lemi Boyce", email = "lemuelboyce@gmail.com" }]
 requires-python = ">=3.12"
