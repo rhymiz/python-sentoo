@@ -1,5 +1,5 @@
 [project]
-name = "sentoo"
+name = "python-sentoo"
 dynamic = ["version"]
 description = "Add your description here"
 readme = "README.md"
