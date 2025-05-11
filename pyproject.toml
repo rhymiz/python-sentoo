@@ -1,12 +1,17 @@
 [project]
 name = "sentoo"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "Lemi Boyce", email = "lemuelboyce@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = ["httpx>=0.28.1", "pydantic>=2.11.4"]
 
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.uv-dynamic-versioning]
+fallback-version = "0.0.0"
 
 [tool.ruff]
 line-length = 100
@@ -21,7 +26,7 @@ target-version = "py312"
 dmypy = true
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
