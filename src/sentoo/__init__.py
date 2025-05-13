@@ -1,4 +1,5 @@
 import importlib.metadata
+
 from .client import Sentoo
 
 try:

@@ -16,7 +16,7 @@ To use the library, import it and create a client instance:
 ```python
 from sentoo import Sentoo
 
-sentoo = Sentoo(token='your_token')
+sentoo = Sentoo(token='your_token', merchant_id='your_merchant_id')
 ```
 ## Documentation
 
@@ -27,7 +27,6 @@ The Sentoo client provides the following methods:
 ```python
 # Create a new transaction
 response = sentoo.transaction_create(
-    sentoo_merchant="your_merchant_id",
     sentoo_amount=1000,  # Amount in cents
     sentoo_description="Payment description",
     sentoo_currency="ANG",  # Supported: ANG, AWG, USD, EUR, XCD
@@ -45,7 +44,6 @@ response = sentoo.transaction_create(
 ```python
 # Cancel an existing transaction
 response = sentoo.transaction_cancel(
-    merchant_id="your_merchant_id",
     transaction_id="transaction_id"
 )
 ```
@@ -55,7 +53,6 @@ response = sentoo.transaction_cancel(
 ```python
 # Check the status of a transaction
 response = sentoo.transaction_status(
-    merchant_id="your_merchant_id",
     transaction_id="transaction_id"
 )
 ```
@@ -65,7 +62,6 @@ response = sentoo.transaction_status(
 ```python
 # Get available payment processors for a transaction
 response = sentoo.transaction_processors(
-    merchant_id="your_merchant_id",
     transaction_id="transaction_id"
 )
 ```

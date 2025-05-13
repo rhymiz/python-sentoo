@@ -1,5 +1,5 @@
-from typing import Any, TypedDict, Literal
-from typing import Optional
+from typing import Any, Literal, Optional, TypedDict
+
 import httpx
 
 
@@ -44,16 +44,18 @@ class Sentoo:
     A client for interacting with the Sentoo payment processing API.
     """
 
-    def __init__(self, token: str, sandbox: bool = False) -> None:
+    def __init__(self, token: str, merchant_id: str, sandbox: bool = False) -> None:
         """
         Initialize Sentoo API client
 
         Args:
             token (str): Your Sentoo API secret token
+            merchant_id (str): Your Sentoo merchant identifier
             sandbox (bool): Whether to use sandbox environment. Defaults to False.
         """
         self._token = token
         self._sandbox = sandbox
+        self._merchant_id = merchant_id
         self._base_url = get_base_url(self._sandbox)
         self._headers = {"X-SENTOO-SECRET": self._token}
 
@@ -82,44 +84,41 @@ class Sentoo:
         url = self._url("/transactions/new")
         return httpx.post(url, headers=self._headers, json=kwargs)
 
-    def transaction_cancel(self, merchant_id: str, transaction_id: str) -> dict[str, Any]:
+    def transaction_cancel(self, transaction_id: str) -> dict[str, Any]:
         """
         Cancel an existing transaction
 
         Args:
-            merchant_id (str): The merchant identifier
             transaction_id (str): The transaction identifier to cancel
 
         Returns:
             dict[str, Any]: API response containing cancellation result
         """
-        url = self._url(f"/payment/cancel/{merchant_id}/{transaction_id}")
+        url = self._url(f"/payment/cancel/{self._merchant_id}/{transaction_id}")
         return httpx.post(url, headers=self._headers)
 
-    def transaction_status(self, merchant_id: str, transaction_id: str) -> dict[str, Any]:
+    def transaction_status(self, transaction_id: str) -> dict[str, Any]:
         """
         Check the status of a transaction
 
         Args:
-            merchant_id (str): The merchant identifier
             transaction_id (str): The transaction identifier to check
 
         Returns:
             dict[str, Any]: API response containing transaction status
         """
-        url = self._url(f"/payment/status/{merchant_id}/{transaction_id}")
+        url = self._url(f"/payment/status/{self._merchant_id}/{transaction_id}")
         return httpx.get(url, headers=self._headers)
 
-    def transaction_processors(self, merchant_id: str, transaction_id: str) -> dict[str, Any]:
+    def transaction_processors(self, transaction_id: str) -> dict[str, Any]:
         """
         Get available payment processors for a transaction
 
         Args:
-            merchant_id (str): The merchant identifier
             transaction_id (str): The transaction identifier
 
         Returns:
             dict[str, Any]: API response containing available payment methods
         """
-        url = self._url(f"/payment/methods/{merchant_id}/{transaction_id}")
+        url = self._url(f"/payment/methods/{self._merchant_id}/{transaction_id}")
         return httpx.get(url, headers=self._headers)
