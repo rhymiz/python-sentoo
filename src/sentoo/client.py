@@ -26,7 +26,6 @@ class CreateTransactionKwargs(TypedDict):
     Type definition for transaction creation parameters
     """
 
-    sentoo_merchant: str
     sentoo_amount: int
     sentoo_description: str
     sentoo_currency: Literal["ANG", "AWG", "USD", "EUR", "XCD"]
@@ -44,7 +43,7 @@ class Sentoo:
     A client for interacting with the Sentoo payment processing API.
     """
 
-    def __init__(self, token: str, merchant_id: str, sandbox: bool = False) -> None:
+    def __init__(self, secret: str, merchant_id: str, sandbox: bool = False) -> None:
         """
         Initialize Sentoo API client
 
@@ -53,11 +52,11 @@ class Sentoo:
             merchant_id (str): Your Sentoo merchant identifier
             sandbox (bool): Whether to use sandbox environment. Defaults to False.
         """
-        self._token = token
+        self._secret = secret
         self._sandbox = sandbox
         self._merchant_id = merchant_id
         self._base_url = get_base_url(self._sandbox)
-        self._headers = {"X-SENTOO-SECRET": self._token}
+        self._headers = {"X-SENTOO-SECRET": self._secret}
 
     def _url(self, path: str) -> str:
         """
@@ -69,6 +68,9 @@ class Sentoo:
         Returns:
             str: Complete URL including base URL and path
         """
+
+        if path.startswith("/"):
+            path = path[1:]
         return f"{self._base_url}/{path}"
 
     def transaction_create(self, **kwargs: CreateTransactionKwargs) -> dict[str, Any]:
@@ -81,8 +83,10 @@ class Sentoo:
         Returns:
             dict[str, Any]: API response containing transaction details
         """
-        url = self._url("/transactions/new")
-        return httpx.post(url, headers=self._headers, json=kwargs)
+        url = self._url("/payment/new")
+        kwargs["sentoo_merchant_id"] = self._merchant_id
+        self._headers["Content-Type"] = "application/x-www-form-urlencoded"
+        return httpx.post(url, headers=self._headers, data=kwargs)
 
     def transaction_cancel(self, transaction_id: str) -> dict[str, Any]:
         """
@@ -95,7 +99,7 @@ class Sentoo:
             dict[str, Any]: API response containing cancellation result
         """
         url = self._url(f"/payment/cancel/{self._merchant_id}/{transaction_id}")
-        return httpx.post(url, headers=self._headers)
+        return httpx.get(url, headers=self._headers)
 
     def transaction_status(self, transaction_id: str) -> dict[str, Any]:
         """
