@@ -1,6 +1,7 @@
-from typing import Any, Literal, Optional, TypedDict
+from typing import Literal, Optional, TypedDict
 
 import httpx
+from httpx import Response
 
 
 def get_base_url(sandbox: bool = False) -> str:
@@ -73,7 +74,7 @@ class Sentoo:
             path = path[1:]
         return f"{self._base_url}/{path}"
 
-    def transaction_create(self, **kwargs: CreateTransactionKwargs) -> dict[str, Any]:
+    def transaction_create(self, **kwargs: CreateTransactionKwargs) -> Response:
         """
         Create a new transaction
 
@@ -88,7 +89,7 @@ class Sentoo:
         self._headers["Content-Type"] = "application/x-www-form-urlencoded"
         return httpx.post(url, headers=self._headers, data=kwargs)
 
-    def transaction_cancel(self, transaction_id: str) -> dict[str, Any]:
+    def transaction_cancel(self, transaction_id: str) -> Response:
         """
         Cancel an existing transaction
 
@@ -101,7 +102,7 @@ class Sentoo:
         url = self._url(f"/payment/cancel/{self._merchant_id}/{transaction_id}")
         return httpx.get(url, headers=self._headers)
 
-    def transaction_status(self, transaction_id: str) -> dict[str, Any]:
+    def transaction_status(self, transaction_id: str) -> Response:
         """
         Check the status of a transaction
 
@@ -114,7 +115,7 @@ class Sentoo:
         url = self._url(f"/payment/status/{self._merchant_id}/{transaction_id}")
         return httpx.get(url, headers=self._headers)
 
-    def transaction_processors(self, transaction_id: str) -> dict[str, Any]:
+    def transaction_processors(self, transaction_id: str) -> Response:
         """
         Get available payment processors for a transaction
 
