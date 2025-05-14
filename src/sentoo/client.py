@@ -85,7 +85,7 @@ class Sentoo:
             dict[str, Any]: API response containing transaction details
         """
         url = self._url("/payment/new")
-        kwargs["sentoo_merchant_id"] = self._merchant_id
+        kwargs["sentoo_merchant"] = self._merchant_id
         self._headers["Content-Type"] = "application/x-www-form-urlencoded"
         return httpx.post(url, headers=self._headers, data=kwargs)
 
