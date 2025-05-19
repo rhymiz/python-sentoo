@@ -1,14 +1,14 @@
-
 import httpx
 from httpx import Response
 
 from sentoo._compat import CreateTransactionKwargs, get_base_url
 
-class Sentoo:
-    """
-    Sentoo API client
 
-    A client for interacting with the Sentoo payment processing API.
+class AsyncSentoo:
+    """
+    AsyncSentoo API client
+
+    An async client for interacting with the Sentoo payment processing API.
     """
 
     def __init__(self, secret: str, merchant_id: str, sandbox: bool = False) -> None:
@@ -25,9 +25,24 @@ class Sentoo:
         self._merchant_id = merchant_id
         self._base_url = get_base_url(self._sandbox)
         self._headers = {"X-SENTOO-SECRET": self._secret}
-        self._client = httpx.Client(headers=self._headers, base_url=self._base_url)
+        self._client = httpx.AsyncClient()
 
-    def transaction_create(self, **kwargs: CreateTransactionKwargs) -> Response:
+    def _url(self, path: str) -> str:
+        """
+        Build a complete URL for an API endpoint
+
+        Args:
+            path (str): The API endpoint path
+
+        Returns:
+            str: Complete URL including base URL and path
+        """
+
+        if path.startswith("/"):
+            path = path[1:]
+        return f"{self._base_url}/{path}"
+
+    async def transaction_create(self, **kwargs: CreateTransactionKwargs) -> Response:
         """
         Create a new transaction
 
@@ -38,13 +53,14 @@ class Sentoo:
             Response: API response containing transaction details
         """
 
+        url = self._url("/payment/new")
         kwargs["sentoo_merchant"] = self._merchant_id
         self._headers["Content-Type"] = "application/x-www-form-urlencoded"
 
-        url = "/payment/new"
-        return self._client.post(url, headers=self._headers, data=kwargs)
+        async with self._client as client:
+            return await client.post(url, headers=self._headers, data=kwargs)
 
-    def transaction_cancel(self, transaction_id: str) -> Response:
+    async def transaction_cancel(self, transaction_id: str) -> Response:
         """
         Cancel an existing transaction
 
@@ -55,10 +71,11 @@ class Sentoo:
             Response: API response containing cancellation result
         """
 
-        url = f"/payment/cancel/{self._merchant_id}/{transaction_id}"
-        return self._client.get(url, headers=self._headers)
+        url = self._url(f"/payment/cancel/{self._merchant_id}/{transaction_id}")
+        async with self._client as client:
+            return await client.get(url, headers=self._headers)
 
-    def transaction_status(self, transaction_id: str) -> Response:
+    async def transaction_status(self, transaction_id: str) -> Response:
         """
         Check the status of a transaction
 
@@ -69,10 +86,11 @@ class Sentoo:
             Response: API response containing transaction status
         """
 
-        url = f"/payment/status/{self._merchant_id}/{transaction_id}"
-        return self._client.get(url, headers=self._headers)
+        url = self._url(f"/payment/status/{self._merchant_id}/{transaction_id}")
+        async with self._client as client:
+            return await client.get(url, headers=self._headers)
 
-    def transaction_processors(self, transaction_id: str) -> Response:
+    async def transaction_processors(self, transaction_id: str) -> Response:
         """
         Get available payment processors for a transaction
 
@@ -83,5 +101,6 @@ class Sentoo:
             Response: API response containing available payment methods
         """
 
-        url = f"/payment/methods/{self._merchant_id}/{transaction_id}"
-        return self._client.get(url, headers=self._headers)
+        url = self._url(f"/payment/methods/{self._merchant_id}/{transaction_id}")
+        async with self._client as client:
+            return await client.get(url, headers=self._headers)

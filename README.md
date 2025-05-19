@@ -16,7 +16,7 @@ To use the library, import it and create a client instance:
 ```python
 from sentoo import Sentoo
 
-sentoo = Sentoo(token='your_token', merchant_id='your_merchant_id')
+sentoo = Sentoo(secret='your_secret', merchant_id='your_merchant_id')
 ```
 ## Documentation
 
