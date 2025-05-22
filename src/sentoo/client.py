@@ -1,8 +1,10 @@
+from typing import Unpack
 
 import httpx
 from httpx import Response
 
-from sentoo._compat import CreateTransactionKwargs, get_base_url
+from ._compat import CreateTransactionKwargs, get_base_url
+
 
 class Sentoo:
     """
@@ -27,7 +29,7 @@ class Sentoo:
         self._headers = {"X-SENTOO-SECRET": self._secret}
         self._client = httpx.Client(headers=self._headers, base_url=self._base_url)
 
-    def transaction_create(self, **kwargs: CreateTransactionKwargs) -> Response:
+    def transaction_create(self, **kwargs: Unpack[CreateTransactionKwargs]) -> Response:
         """
         Create a new transaction
 

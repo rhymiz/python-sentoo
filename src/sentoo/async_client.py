@@ -1,7 +1,9 @@
+from typing import Unpack
+
 import httpx
 from httpx import Response
 
-from sentoo._compat import CreateTransactionKwargs, get_base_url
+from ._compat import CreateTransactionKwargs, get_base_url
 
 
 class AsyncSentoo:
@@ -42,7 +44,7 @@ class AsyncSentoo:
             path = path[1:]
         return f"{self._base_url}/{path}"
 
-    async def transaction_create(self, **kwargs: CreateTransactionKwargs) -> Response:
+    async def transaction_create(self, **kwargs: Unpack[CreateTransactionKwargs]) -> Response:
         """
         Create a new transaction
 

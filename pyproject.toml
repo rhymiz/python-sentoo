@@ -14,16 +14,35 @@ source = "uv-dynamic-versioning"
 fallback-version = "0.0.0"
 
 [tool.ruff]
+exclude = [".venv"]
 line-length = 100
 indent-width = 4
-target-version = "py312"
+target-version = "py313"
+respect-gitignore = true
+
+[tool.ruff.lint]
+select = ["E", "I", "B", "ASYNC"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
 "tests.py" = ["F"]
+"migrations/**" = ["D"]
 
-[tool.pylsp]
-dmypy = true
+[tool.ruff.lint.flake8-tidy-imports]
+# Disallow all relative imports.
+ban-relative-imports = "parents"
+
+[tool.ruff.analyze]
+detect-string-imports = true
+
+[tool.pyright]
+typeCheckingMode = "basic"
+reportAttributeAccessIssue = false
+
 
 [build-system]
 requires = ["hatchling", "uv-dynamic-versioning"]
@@ -31,9 +50,6 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
-    "mypy>=1.15.0",
-    "pylsp-mypy>=0.7.0",
-    "python-lsp-ruff>=2.2.2",
-    "python-lsp-server>=1.12.2",
+    "pyright>=1.1.401",
     "ruff>=0.11.8",
 ]

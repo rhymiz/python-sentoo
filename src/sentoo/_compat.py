@@ -3,7 +3,7 @@ from typing import Literal, Optional, TypedDict
 
 def get_base_url(sandbox: bool = False) -> str:
     """
-    Retrieve environment specific base url
+    Retrieve environment-specific base url
 
     Args:
         sandbox (bool): If True, uses sandbox environment. Defaults to False.
@@ -30,5 +30,6 @@ class CreateTransactionKwargs(TypedDict):
     sentoo_return_url: str
     sentoo_customer: Optional[str]
     sentoo_expires: Optional[str]
+    sentoo_merchant: Optional[str]
     sentoo_2nd_currency: Optional[str]
     sentoo_2nd_amount: Optional[str]

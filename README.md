@@ -9,6 +9,7 @@ You can install the library using pip:
 ```bash
 pip install sentoo
 ```
+
 ## Usage
 
 To use the library, import it and create a client instance:
@@ -18,6 +19,7 @@ from sentoo import Sentoo
 
 sentoo = Sentoo(secret='your_secret', merchant_id='your_merchant_id')
 ```
+
 ## Documentation
 
 The Sentoo client provides the following methods:
