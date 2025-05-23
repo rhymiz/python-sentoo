@@ -3,9 +3,30 @@ name = "sentoo"
 dynamic = ["version"]
 description = "A client library for Sentoo.io"
 readme = "README.md"
+urls = { Homepage = "https://github.com/rhymiz/python-sentoo", GitHub = "https://github.com/rhymiz/python-sentoo" }
 authors = [{ name = "Lemi Boyce", email = "lemuelboyce@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = ["httpx>=0.28.1", "pydantic>=2.11.4"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 5 - Production/Stable",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+]
+keywords = [
+    "sentoo",
+    "payments",
+    "ecommerce",
+    "payment gateway",
+    "aruba",
+    "bonaire",
+    "curacao",
+    "sint maarten",
+    "sint eustatius",
+]
 
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
@@ -29,8 +50,6 @@ quote-style = "double"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D"]
-"tests.py" = ["F"]
-"migrations/**" = ["D"]
 
 [tool.ruff.lint.flake8-tidy-imports]
 # Disallow all relative imports.
