@@ -1,6 +1,8 @@
 ## python-sentoo
 
-A client library for [Sentoo](https://sentoo.io/)
+An unofficial client library for [Sentoo](https://sentoo.io/)
+
+Note: This library is not officially supported by Sentoo.
 
 ## Installation
 
